@@ -18,7 +18,7 @@ jobs:
         with:
           repository: ${{ github.repository }}
           latest: true
-          token: ${{ secrets.REPO_AUTH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fileName: "*.7z"
 
       - name: Calculate SHA256 Checksum
@@ -50,4 +50,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "${{ env.RELEASE_TAG_NO_V }}-checksums-sha256.txt"
-          token: ${{ secrets.REPO_AUTH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
