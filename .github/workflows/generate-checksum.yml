@@ -36,9 +36,6 @@ jobs:
 
           CHECKSUMS_FILE="${RELEASE_TAG_NO_V}-checksums-sha256.txt"
 
-          # Move to asset download directory
-          cd /home/runner/work/${{ github.repository }}/$(basename ${{ github.repository }})
-
           for file in *.7z; do
             sha256sum "$file" >> "$CHECKSUMS_FILE"
           done
