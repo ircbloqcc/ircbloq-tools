@@ -18,42 +18,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fileName: "*.7z"
 
-      - name: Verify 7z files
-        run: |
-          set -e
-
-          echo "RELEASE_TAG: ${{ github.event.release.tag_name }}"
-
-          RELEASE_TAG="${{ github.event.release.tag_name }}"
-          RELEASE_TAG_NO_V="${RELEASE_TAG#v}"
-          echo "RELEASE_TAG_NO_V=${RELEASE_TAG_NO_V}" >> $GITHUB_ENV
-          CHECKSUMS_FILE="${RELEASE_TAG_NO_V}-checksums-sha256.txt"
-
-          echo "Looking for .7z files..."
-          shopt -s nullglob
-          FILES=(*.7z)
-          if [ ${#FILES[@]} -eq 0 ]; then
-            echo "No .7z files found for checksum calculation!"
-            exit 1
-          fi
-
-          for file in "${FILES[@]}"; do
-            sha256sum "$file" >> "$CHECKSUMS_FILE"
-          done
-
-          if [[ -f "$CHECKSUMS_FILE" ]]; then
-            echo "Checksum file created: $CHECKSUMS_FILE"
-            cat "$CHECKSUMS_FILE"
-          else
-            echo "Failed to create checksum file."
-            exit 1
-          fi
-
       - name: Calculate SHA256 Checksum
         id: checksum
         run: |
           # Get the release tag name (e.g., v1.0.0)
-          RELEASE_TAG="${{ github.event.release.tag_name }}"
+          RELEASE_TAG="$(git fetch --tags && git describe --tags $(git rev-list --tags --max-count=1))"
 
           # Remove the leading 'v' from the tag if it exists
           RELEASE_TAG_NO_V="${RELEASE_TAG#v}"
