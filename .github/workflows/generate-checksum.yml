@@ -47,4 +47,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "${{ env.RELEASE_TAG_NO_V }}-checksums-sha256.txt"
+          tag_name: "v${{ env.RELEASE_TAG_NO_V }}"
           token: ${{ secrets.GITHUB_TOKEN }}
