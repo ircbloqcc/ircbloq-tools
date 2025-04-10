@@ -3,6 +3,7 @@ name: Generate SHA256 Checksums
 on:
   release:
     types: [published]
+  workflow_dispatch: #
 
 jobs:
   generate-checksums:
